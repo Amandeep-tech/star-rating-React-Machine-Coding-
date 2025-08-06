@@ -69,7 +69,7 @@ button:focus-visible {
 
 .stars-container {
   display: flex;
-  gap: 4px;
+  gap: 8px;
 }
 .square {
   border: 1px solid black;
@@ -77,8 +77,20 @@ button:focus-visible {
   width: 2rem;
   height: 2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .square:hover {
-  background-color: yellow;
+  background-color: #535bf2;
+  transform: scale(1.1);
+}
+
+.filled {
+  background-color: #535bf2;
+  transform: scale(1.05);
+}
+
+.not_filled {
+  background-color: white;
+  transform: scale(1);
 }

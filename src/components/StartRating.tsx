@@ -6,16 +6,17 @@ export default function StarRating(props: { noOfStars?: number }) {
   const [stars, setStars] = useState<number[]>(Array(noOfStars).fill(0));
 	const [lastClickedIndex, setlastClickedIndex] = useState(-1); // initally not clicked any star/box
 
+	const getFilledStars = (index: number) => {
+		const arr = Array.from({ length: noOfStars }, (_, i) => {
+			return i <= index ? 1 : 0
+		})
+		return arr;
+	}
+
   const handleMouseEnter = (index: number) => {
-		// index is - on which star we have entered
-    const newStars = Array(noOfStars).fill(0);
 		// fill stars till this index.
-    for (let i = 0; i <= index; i++) {
-      if (i <= index) {
-        newStars[i] = 1;
-      }
-    }
-    setStars(newStars);
+    const filledStars = getFilledStars(index);
+    setStars(filledStars);
   };
 
 	const handleMouseLeave = () => {
@@ -26,24 +27,15 @@ export default function StarRating(props: { noOfStars?: number }) {
 		};
 
 		// else, get back to previous state of lastClickedIndex.
-		const newStars = Array(noOfStars).fill(0);
-		for(let i = 0; i <= lastClickedIndex; i++) {
-			if(i <= lastClickedIndex) {
-				newStars[i] = 1
-			}
-		}
-		setStars(newStars);
+		const lastFilledStars = getFilledStars(lastClickedIndex)
+		setStars(lastFilledStars);
 	}
 
 	const handleClick = (index: number) => {
 		// update the last clicked index.
 		setlastClickedIndex(index);
-		const newStars = [...stars];
 		// fill with color till this index.
-		for (let i = 0; i <= index; i++) {
-      newStars[i] = 1;
-    }
-    setStars(newStars);
+    setStars(getFilledStars(index));
 	}
 
   return (
@@ -52,13 +44,10 @@ export default function StarRating(props: { noOfStars?: number }) {
         return (
           <div
 						key={i}
-            className="square"
+            className={`square ${star ? "filled": "not_filled"}`}
 						onClick={() => handleClick(i)}
             onMouseEnter={() => handleMouseEnter(i)}
 						onMouseLeave={handleMouseLeave}
-						style={{
-							backgroundColor: star ? "yellow": "white"
-						}}
           ></div>
         );
       })}
